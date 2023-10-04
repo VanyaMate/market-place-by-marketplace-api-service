@@ -1,0 +1,18 @@
+@import "palette";
+
+a {
+    text-decoration: none;
+    transition: .1s;
+
+    &:visited {
+        color: $blue_5;
+    }
+
+    &:hover {
+        color: $blue_3;
+    }
+
+    &:active {
+        color: $blue_1;
+    }
+}
