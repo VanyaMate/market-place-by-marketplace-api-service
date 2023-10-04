@@ -1,0 +1,15 @@
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .left {
+        display: flex;
+        gap: 35px;
+    }
+
+    .right {
+        display: flex;
+        gap: 15px;
+    }
+}
