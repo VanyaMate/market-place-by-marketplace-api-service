@@ -1,13 +1,11 @@
-import {
-    User,
-} from '@vanyamate/market-place-service/services/storage-services/user/user.type.ts';
+import { PublicUser } from '@vanyamate/market-place-service/storage.ts';
 import { Skeleton } from 'antd';
 import React from 'react';
 import HeaderProfileItem from './HeaderProfileItem.tsx';
 
 
 export type HeaderProfileProps = {
-    profile: User | null;
+    profile: PublicUser | null;
     loading: boolean;
 }
 
