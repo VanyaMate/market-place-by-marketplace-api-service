@@ -1,3 +1,15 @@
+import {
+    ICategoriesService,
+} from '@vanyamate/market-place-service/services/storage-services/categories/categories.interface.ts';
+import {
+    Category,
+} from '@vanyamate/market-place-service/services/storage-services/category/category.type.ts';
+import {
+    Product,
+} from '@vanyamate/market-place-service/services/storage-services/product/product.type.ts';
+import {
+    IProductsService,
+} from '@vanyamate/market-place-service/services/storage-services/products/products.interface.ts';
 import { Divider, Dropdown, Empty, Input, Select } from 'antd';
 import React, {
     ChangeEvent,
@@ -6,12 +18,6 @@ import React, {
     useMemo,
     useState,
 } from 'react';
-import {
-    ICategoriesService,
-    IProductsService,
-    Product,
-    Category,
-} from '@vanyamate/market-place-service';
 import css from './HeaderProductSearch.module.scss';
 import type { MenuProps } from 'antd';
 
@@ -25,7 +31,7 @@ export type HeaderProductSearchProps = {
 }
 
 const HeaderProductSearch: React.FC<HeaderProductSearchProps> = (props) => {
-    const [ categoryOpened, setCategoryOpened ]  = useState<boolean>(false);
+    const [ categoryOpened ]                     = useState<boolean>(false);
     const [ loading, setLoading ]                = useState<boolean>(false);
     const { categoriesService, productsService } = props;
     const [ categories, setCategories ]          = useState<Category[]>([]);
@@ -55,7 +61,7 @@ const HeaderProductSearch: React.FC<HeaderProductSearchProps> = (props) => {
         })) : [ {
             key  : 'empty-key',
             label: <Empty/>,
-        }];
+        } ];
     }, [ products ]);
 
     useEffect(() => {

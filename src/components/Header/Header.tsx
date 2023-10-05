@@ -1,44 +1,69 @@
-import React from 'react';
+import {
+    StorageName,
+} from '@vanyamate/market-place-service/config/storage-names.config.ts';
+import {
+    StorageService,
+} from '@vanyamate/market-place-service/services/common-services/storage/storage.service.ts';
+import {
+    CategoriesStorageService,
+} from '@vanyamate/market-place-service/services/storage-services/categories/categories-storage.service.ts';
+import {
+    ICategoriesService,
+} from '@vanyamate/market-place-service/services/storage-services/categories/categories.interface.ts';
 import {
     Category,
-    ICategoriesService,
-    CategoriesService,
-    StorageService,
-    StorageName, IProductsService, Product,
-    ProductsLocalService,
-} from '@vanyamate/market-place-service';
+} from '@vanyamate/market-place-service/services/storage-services/category/category.type.ts';
+import {
+    Product,
+} from '@vanyamate/market-place-service/services/storage-services/product/product.type.ts';
+import {
+    ProductsStorageService,
+} from '@vanyamate/market-place-service/services/storage-services/products/products-storage.service.ts';
+import {
+    IProductsService,
+} from '@vanyamate/market-place-service/services/storage-services/products/products.interface.ts';
+import React from 'react';
+import { useMemo } from 'react';
+import HeaderProductSearch
+    from '../HeaderProductSearch/HeaderProductSearch.tsx';
+import HeaderStoreName from '../HeaderStoreName/HeaderStoreName.tsx';
+import css from './Header.module.scss';
 import categories
     from '@vanyamate/market-place-service/data/categories/categories.json';
 import products_1
     from '@vanyamate/market-place-service/data/products/products_1.json';
 import products_2
     from '@vanyamate/market-place-service/data/products/products_2.json';
-import { useMemo } from 'react';
-import HeaderProductSearch
-    from '../HeaderProductSearch/HeaderProductSearch.tsx';
-import HeaderStoreName from '../HeaderStoreName/HeaderStoreName.tsx';
-import css from './Header.module.scss';
 
 
 const Header = () => {
     const categoriesService: ICategoriesService<Category> = useMemo(() => {
-        return new CategoriesService(
+        return new CategoriesStorageService<Category>(
             new StorageService(
                 localStorage,
                 StorageName.CATEGORIES,
             ),
-            categories,
+            {
+                options: {
+                    items        : categories,
+                    findOneFilter: (category: Category, title: string) => category.title === title,
+                },
+            },
         );
     }, []);
 
     const productsService: IProductsService<Product> = useMemo(() => {
-        return new ProductsLocalService(
+        return new ProductsStorageService<Product>(
             new StorageService(
                 localStorage,
                 StorageName.PRODUCTS,
             ),
-            products_1,
-            products_2,
+            {
+                options: {
+                    items        : [ ...products_1, ...products_2 ].flat(1),
+                    findOneFilter: (product: Product, id: string) => product.barcode === Number(id),
+                },
+            },
         );
     }, []);
 
