@@ -19,4 +19,4 @@ const HeaderStoreName: React.FC<HeaderStoreNameProps> = (props) => {
     );
 };
 
-export default HeaderStoreName;
+export default React.memo(HeaderStoreName);
