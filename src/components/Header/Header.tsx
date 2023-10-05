@@ -10,9 +10,7 @@ import {
 import {
     IProductsService,
 } from '@vanyamate/market-place-service/services/storage-services/products/products.interface.ts';
-import {
-    User,
-} from '@vanyamate/market-place-service/services/storage-services/user/user.type.ts';
+import { PublicUser } from '@vanyamate/market-place-service/storage.ts';
 import React from 'react';
 import HeaderProductSearch
     from '../HeaderProductSearch/HeaderProductSearch.tsx';
@@ -22,7 +20,7 @@ import css from './Header.module.scss';
 
 
 export type ProfileStatus = {
-    profile: User | null,
+    profile: PublicUser | null,
     loading: boolean
 };
 export type HeaderProps = {

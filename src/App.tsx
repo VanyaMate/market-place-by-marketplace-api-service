@@ -4,10 +4,19 @@ import Footer from './components/Footer/Footer.tsx';
 import Header from './components/Header/Header.tsx';
 import css from './App.module.scss';
 import {
-    CreateUserDto, IUserService, UpdateUserDto,
-    User, UserDataGenerator, UserStorageService,
-    ICategoriesService, Category, CategoriesStorageService,
-    IProductsService, Product, ProductsStorageService
+    CreateUserDto,
+    UpdateUserDto,
+    User,
+    UserDataGenerator,
+    UserStorageService,
+    ICategoriesService,
+    Category,
+    CategoriesStorageService,
+    IProductsService,
+    Product,
+    ProductsStorageService,
+    IAuthService,
+    AuthStorageService, UserMapper, PublicUser,
 } from '@vanyamate/market-place-service/storage.ts';
 import {
     StorageName,
@@ -21,7 +30,7 @@ import {
 
 
 const App = () => {
-    const [ profile, setProfile ] = useState<User | null>(null);
+    const [ profile, setProfile ] = useState<PublicUser | null>(null);
     const [ loading, setLoading ] = useState<boolean>(true);
 
     const profileData = useMemo(() => ({
@@ -29,24 +38,36 @@ const App = () => {
     }), [ profile, loading ]);
 
     useEffect(() => {
-        const userService: IUserService<User, CreateUserDto, UpdateUserDto> = new UserStorageService<User, CreateUserDto, UpdateUserDto>(
+        const authService: IAuthService<PublicUser> = new AuthStorageService(
+            new UserStorageService<User, CreateUserDto, UpdateUserDto>(
+                new StorageService(
+                    localStorage,
+                    'users',
+                ),
+                new UserDataGenerator(),
+                {
+                    options: {
+                        timeout: 2000,
+                        pk     : 'login',
+                    },
+                },
+            ),
+            new UserMapper(),
             new StorageService(
                 localStorage,
-                'users',
+                '_market_ls-db_current-user',
             ),
-            new UserDataGenerator(),
-            {
-                options: {
-                    timeout: 2000,
-                    pk     : 'login',
-                },
-            },
         );
 
         setLoading(true);
-        userService
-            .read('admin')
-            .then((user: User | null) => setProfile(user))
+/*        authService
+            .login('admin', '321')
+            .then((user: PublicUser) => setProfile(user))
+            .finally(() => setLoading(false));*/
+
+        authService
+            .refresh()
+            .then((user: PublicUser) => setProfile(user))
             .finally(() => setLoading(false));
     }, []);
 
