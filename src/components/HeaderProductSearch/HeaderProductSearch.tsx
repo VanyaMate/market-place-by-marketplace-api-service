@@ -1,5 +1,6 @@
-import { Divider, Dropdown, Input, Select } from 'antd';
+import { Divider, Dropdown, Empty, Input, Select } from 'antd';
 import React, {
+    ChangeEvent,
     useCallback,
     useEffect,
     useMemo,
@@ -24,6 +25,8 @@ export type HeaderProductSearchProps = {
 }
 
 const HeaderProductSearch: React.FC<HeaderProductSearchProps> = (props) => {
+    const [ categoryOpened, setCategoryOpened ]  = useState<boolean>(false);
+    const [ loading, setLoading ]                = useState<boolean>(false);
     const { categoriesService, productsService } = props;
     const [ categories, setCategories ]          = useState<Category[]>([]);
     const [ products, setProducts ]              = useState<Product[]>([]);
@@ -46,33 +49,40 @@ const HeaderProductSearch: React.FC<HeaderProductSearchProps> = (props) => {
     }, [ categories ]);
 
     const productsOptions = useMemo<MenuProps['items']>(() => {
-        console.log('products options', products);
-        return products.map((product) => ({
+        return products.length ? products.map((product) => ({
             key  : product.barcode.toString(),
             label: (<div>{ product.product_name }</div>),
-        }));
+        })) : [ {
+            key  : 'empty-key',
+            label: <Empty/>,
+        }];
     }, [ products ]);
 
     useEffect(() => {
-        if (search) {
+        if (search.length > 2) {
             const filter: Partial<Product> = {
                 product_name: search,
             };
             if (activeCategory) {
                 filter.category = activeCategory;
             }
+            setLoading(true);
             productsService
                 .findMany(filter, {
                     limit: 10,
+                    sort : [ 'product_name', 'asc' ],
                 })
                 .then((response) => response.list)
-                .then((products) => setProducts(products));
+                .then((products) => setProducts(products))
+                .finally(() => setLoading(false));
+        } else {
+            setProducts([]);
         }
     }, [ search, activeCategory ]);
 
     useEffect(() => {
         categoriesService
-            .findMany({}, { limit: 30 })
+            .findMany({}, { limit: 30, sort: [ 'title', 'asc' ] })
             .then((response) => response.list)
             .then((categories) => setCategories(categories));
     }, []);
@@ -81,14 +91,15 @@ const HeaderProductSearch: React.FC<HeaderProductSearchProps> = (props) => {
         setActiveCategory(category ?? null);
     }, [ activeCategory ]);
 
-    const onSearchChange = useCallback((search: string) => {
-        setSearch(search);
+    const onSearchChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
+        setSearch(event.target.value);
     }, [ search ]);
 
     return (
         <Dropdown
             menu={ { items: productsOptions } }
             trigger={ [ 'hover' ] }
+            disabled={ categoryOpened }
         >
             <div className={ css.container }>
                 <Select
@@ -103,9 +114,11 @@ const HeaderProductSearch: React.FC<HeaderProductSearchProps> = (props) => {
                 <Search
                     placeholder={ 'Search for your products' }
                     bordered={ false }
-                    onSearch={ onSearchChange }
                     size={ 'large' }
                     className={ css.search }
+                    enterButton={ true }
+                    onChange={ onSearchChange }
+                    loading={ loading }
                 />
             </div>
         </Dropdown>
