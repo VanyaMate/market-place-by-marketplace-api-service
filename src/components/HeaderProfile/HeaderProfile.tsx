@@ -3,6 +3,7 @@ import {
 } from '@vanyamate/market-place-service/services/storage-services/user/user.type.ts';
 import { Skeleton } from 'antd';
 import React from 'react';
+import HeaderProfileItem from './HeaderProfileItem.tsx';
 
 
 export type HeaderProfileProps = {
@@ -18,7 +19,9 @@ const HeaderProfile: React.FC<HeaderProfileProps> = (props) => {
             {
                 loading
                 ? <Skeleton.Avatar active={ true } size={ 'large' }/>
-                : <div>{ profile ? profile.login : 'No login' }</div>
+                : profile ? <HeaderProfileItem avatar={ profile.avatar }
+                                               login={ profile.login }/>
+                          : 'No login'
             }
         </div>
     );

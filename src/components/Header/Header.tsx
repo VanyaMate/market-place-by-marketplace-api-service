@@ -21,11 +21,12 @@ import HeaderStoreName from '../HeaderStoreName/HeaderStoreName.tsx';
 import css from './Header.module.scss';
 
 
+export type ProfileStatus = {
+    profile: User | null,
+    loading: boolean
+};
 export type HeaderProps = {
-    profile: {
-        profile: User | null,
-        loading: boolean
-    },
+    profile: ProfileStatus,
     categoriesService: ICategoriesService<Category>,
     productsService: IProductsService<Product>
 }

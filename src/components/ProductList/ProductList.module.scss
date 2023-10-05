@@ -1,0 +1,9 @@
+$gap: 10px;
+$cardWidth: calc(25% - $gap * 3 / 4);
+
+.container {
+    display: grid;
+    grid-template-columns: $cardWidth $cardWidth $cardWidth $cardWidth;
+    gap: $gap;
+
+}

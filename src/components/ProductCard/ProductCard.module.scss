@@ -1,0 +1,37 @@
+@import "src/styles/palette";
+
+.container {
+    padding: 10px;
+    border: 1px solid $gray_0;
+    border-radius: 30px;
+
+    .image {
+        width: 100%;
+        border-radius: 20px;
+    }
+
+    .barcode {
+        font-size: 10px;
+        color: $gray_1;
+    }
+
+    .category {
+        font-size: 14px;
+        color: $gray_2;
+    }
+
+    .title {
+        font-size: 20px;
+        color: $black_0;
+    }
+
+    .description {
+        font-size: 16px;
+        color: $black_2;
+    }
+
+    .price {
+        font-size: 26px;
+        color: $blue_3;
+    }
+}

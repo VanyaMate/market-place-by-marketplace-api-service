@@ -52,7 +52,7 @@ const App = () => {
     const [ profile, setProfile ] = useState<User | null>(null);
     const [ loading, setLoading ] = useState<boolean>(true);
 
-    const headerProfileData = useMemo(() => ({
+    const profileData = useMemo(() => ({
         profile, loading,
     }), [ profile, loading ]);
 
@@ -115,9 +115,10 @@ const App = () => {
             <Header
                 productsService={ productsService }
                 categoriesService={ categoriesService }
-                profile={ headerProfileData }
+                profile={ profileData }
             />
-            <Content/>
+            <Content profile={ profileData }
+                     productsService={ productsService }/>
             <Footer/>
         </div>
     );
