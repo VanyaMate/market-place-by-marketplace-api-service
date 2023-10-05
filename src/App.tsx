@@ -1,51 +1,23 @@
-import {
-    StorageName,
-} from '@vanyamate/market-place-service/config/storage-names.config.ts';
-import {
-    StorageService,
-} from '@vanyamate/market-place-service/services/common-services/storage/storage.service.ts';
-import {
-    CategoriesStorageService,
-} from '@vanyamate/market-place-service/services/storage-services/categories/categories-storage.service.ts';
-import {
-    ICategoriesService,
-} from '@vanyamate/market-place-service/services/storage-services/categories/categories.interface.ts';
-import {
-    Category,
-} from '@vanyamate/market-place-service/services/storage-services/category/category.type.ts';
-import {
-    Product,
-} from '@vanyamate/market-place-service/services/storage-services/product/product.type.ts';
-import {
-    ProductsStorageService,
-} from '@vanyamate/market-place-service/services/storage-services/products/products-storage.service.ts';
-import {
-    IProductsService,
-} from '@vanyamate/market-place-service/services/storage-services/products/products.interface.ts';
-import {
-    UserStorageService,
-} from '@vanyamate/market-place-service/services/storage-services/user/user-storage.service.ts';
-import {
-    UserDataGenerator,
-} from '@vanyamate/market-place-service/services/storage-services/user/user.data-generator.ts';
-import {
-    IUserService,
-} from '@vanyamate/market-place-service/services/storage-services/user/user.interface.ts';
-import {
-    CreateUserDto, UpdateUserDto,
-    User,
-} from '@vanyamate/market-place-service/services/storage-services/user/user.type.ts';
 import { useEffect, useMemo, useState } from 'react';
 import Content from './components/Content/Content.tsx';
 import Footer from './components/Footer/Footer.tsx';
 import Header from './components/Header/Header.tsx';
 import css from './App.module.scss';
-import categories
-    from '@vanyamate/market-place-service/data/categories/categories.json';
-import products_1
-    from '@vanyamate/market-place-service/data/products/products_1.json';
-import products_2
-    from '@vanyamate/market-place-service/data/products/products_2.json';
+import {
+    CreateUserDto, IUserService, UpdateUserDto,
+    User, UserDataGenerator, UserStorageService,
+    ICategoriesService, Category, CategoriesStorageService,
+    IProductsService, Product, ProductsStorageService
+} from '@vanyamate/market-place-service/storage.ts';
+import {
+    StorageName,
+    StorageService,
+} from '@vanyamate/market-place-service';
+import {
+    categories,
+    product_2,
+    product_1,
+} from '@vanyamate/market-place-service/data.ts';
 
 
 const App = () => {
@@ -103,7 +75,7 @@ const App = () => {
             {
                 options: {
                     timeout      : 100,
-                    items        : [ ...products_1, ...products_2 ].flat(1),
+                    items        : [ ...product_2, ...product_1 ].flat(1),
                     findOneFilter: (product: Product, id: string) => product.barcode === Number(id),
                 },
             },
