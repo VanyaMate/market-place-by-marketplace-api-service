@@ -11,7 +11,7 @@ const Checkbox: React.FC<CheckboxProps> = (props) => {
     const { module }          = props;
     const [ state, setState ] = useState<boolean>(module.value);
 
-    const onToggle = useCallback<EntityCallback<EntityEvents<CheckboxEvents>['toggle']>>((state: boolean) => {
+    const onToggle = useCallback<EntityCallback<EntityEvents<CheckboxEvents>['toggle']>>((state) => {
         setState(state);
     }, [ state ]);
 
