@@ -13,8 +13,10 @@ export type ProductListProps = {
 const ProductList: React.FC<ProductListProps> = (props) => {
     return (
         <div className={ css.container }>
-            { props.list.map((product) => <ProductCard key={ product.barcode }
-                                                       product={ product }/>) }
+            {
+                props.list.map((product) => <ProductCard key={ product.barcode }
+                                                         product={ product }/>)
+            }
         </div>
     );
 };
